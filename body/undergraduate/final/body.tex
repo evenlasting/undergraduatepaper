@@ -1,65 +1,220 @@
 \cleardoublepage
 
-\section{Overleaf 使用注意事项}
+\section{相关工作}
+故事线因为对于实体和情节具有很好的表现力而在近些年的可视化研究中十分火热。故事线的研究主要分为算法和创作工具两方面。下面将分开进行叙述。
+\subsection{故事线可视化算法}
+2009年Randall为XKCD漫画创作了几个手绘故事线情节[1]，这种可视化方式引起了研究人员的兴趣。人们发现这种技术可以可视化众多实体和场景交互的故事关系，其后它逐步被用在可视化社会和家庭的结构关系。在故事线技术逐渐成熟之后，Tanahashi等人[5]提出了使用基因算法来构建故事线的模型，同时也提出了一套故事线的美学原则。但是他们的算法过于缓慢，而不能应用在较大的数据集上。其后StoryFlow[2]应用了基于贪心的优化算法来极大的提高了布局的生成速度，同时提供了拉直、拖拽等交互来允许用户优化布局。这个模型提高了故事线整体的易读性和美观性。Tanahashi等人[4]又在StoryFlow的算法上进行了修改，使其可以在流数据上运行，获得了更好的拓展性和效率。
 
-如果你在Overleaf上编译本模板，请注意如下事项：
+但是这些作品都没有充分检查艺术家本身的设计考虑，其后的iStoryline系统[8]为了表达艺术家的叙事元素添加了众多交互，使得自动生成的故事线可以简单的逼近手绘故事线。
 
-\begin{itemize}
-    \item 删除根目录的 ``.latexmkrc'' 文件，否则编译失败且不报任何错误
-    \item 字体有版权所以本模板不能附带字体，请务必手动上传字体文件，并在各个专业模板下手动指定字体。
-        具体方法参照 GitHub 主页的说明。
-        {\bfseries 本模板的 Overleaf 版删除了仿宋字体设置，否则会编译超时}。
-    \item 当前（2019年9月2日）的Overleaf使用TexLive 2017进行编译，但一些伪粗体复制乱码的问题需要TexLive 2019版本来解决。
-        所以各位同学可以在Overleaf上编写论文，但务必使用本地的TexLive 2019来进行最终编译，以免产生查重相关问题。
-        具体说明参照 GitHub 主页。
-\end{itemize}
+故事线算法的研究逐步提高了故事线的生成性能和应用场景。但是他们都基于那三个优化目标[4,5]和自动布局。因此，这些布局在外观上都是相似的，并没有变化。以及尽管故事线传达了角色和情节的关系，但是和艺术家制作的故事线插图有很大差别。目前还没有研究来说明自动生成的故事线是否完全编码了叙事的重要元素，不过我们可以直观的感受到自动生成的故事线和手绘故事线是有差别的。也就是说，故事线可视化生成算法，目前还无法直接生成具有手绘风格的故事线。这也是由美学原则决定的，如果我们想生成具有手绘风格的故事线，那么就一定要抛开最初的美学原则，而对于每种手绘风格制定自己的美学原则，也就是需要一个更自由的交互设计框架。
 
-\subsection{节标题}
+单独就生成算法[2]本身来说，因为其最后一步是解一个复杂的优化方程，所以它的速度较慢，对于庞大的故事无法实时处理，需要进行优化。
+\subsubsection{故事线可视化工具}
+对于可视化工具的研究也是今年来的热门。数据驱动的可视化工具更是热门中的热门，数据驱动[6]就是通过数据来促进创作可视化作品。Liu等人[7]提出了一种懒绑定的通用创作形式，并且推出了InfoNice系统，其已经被合并进Power BI来使得普通用户也可以创作优雅的信息图表。除此之外也有很多其他的可视化创作工具，但是它们都不能简单的创作故事线来展现故事情节，因为故事线需要特殊的设计原则和美学目标。
+使用Adobe Illustrator或者Photoshop等自由格式的工具可以灵活多变的创作故事线，但是这非常耗时，并且容易出错。
+StoryFlow[2]在这两者的基础上为用户提供了编辑行列等低阶操作，然而这种交互不足以有效的支持高阶设计，比如改变线条的整体趋势等。iStoryline[8]在其基础上对于高阶设计进行了总结，并把复杂的设计映射到了几个简单的交互上，提高了手绘风格故事线的创作效率。
 
-\subsubsection{小节标题}
+可是这些工具都没有进行开源，普通用户接触不到这些工具，也无从得知故事线这种可视化方法。开发一个开源的故事线可视化工具十分重要。 
 
-\par 我们可以用includegraphics来插入现有的jpg等格式的图片，如\autoref{fig:zju-logo}。
+不过就算有了这样的工具，如果我们要使用创作工具来将自动生成的故事线逼近手绘故事线。这是比较复杂的一件事情，首先要考虑叙述元素，然后要将叙事元素映射到手绘视觉元素。之后，要针对这些元素来使用创作工具的交互工具。
+手绘视觉元素是比较繁杂的，波动、合并等等。每个设计都有各自的隐喻。我们直接着眼于目前最全能的工具iStoryline[8]，它将主要的视觉元素总结了出来，并且可以通过简单的交互来遍历整个设计空间，你总是可以到达你的设计目标。
+使用iStoryline时你要使用简单的交互去实现复杂的效果。这个过程比较艰涩，它包含了很多尝试-错误-重复的过程，这些过程将耗费你较长的时间。在这个逐步试错的过程中，或许可以提供给用户一些搜索方法，让他们更容易达到目标布局。
 
+基于以上这些考虑，我们开发了此系统，它有更自由的设计空间，更快速的算法结构以及一个基于贪心的帮助用户进行探索的变形交互。
+
+\section{整体架构}
+本设计的架构是传统上的服务端客户端架构。本人的贡献在后端系统，所以主要对后端进行讲述。
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=.4\linewidth]{logo/zju}
-    \caption{\label{fig:zju-logo}浙江大学LOGO}
+    \includegraphics[width=.8\linewidth]{body/Story}
+    \caption{\label{fig:systemBody}系统架构图，其中Scripts为故事脚本，Story为整个系统暴露的类，Story提供一些API来选择故事线的生成流程，生成完成后导出故事线数据或者渲染出的canvas组件。}
 \end{figure}
 
-\par 如\autoref{tab:sample}所示，这是一张自动调节列宽的表格。
-
-\begin{table}[ht]
-    \caption{\label{tab:sample}自动调节列宽的表格}
-    \begin{tabularx}{\linewidth}{c|X<{\centering}}
-        \hline
-        第一列 & 第二列 \\ \hline
-        xxx & xxx \\ \hline
-        xxx & xxx \\ \hline
-        xxx & xxx \\ \hline
-    \end{tabularx}
-\end{table}
-
-\par 如\autoref{equ:sample}，这是一个公式
-
-\begin{equation}
-    \label{equ:sample}
-    A=\overbrace{(a+b+c)+\underbrace{i(d+e+f)}_{\text{虚数}}}^{\text{复数}}
-\end{equation}
-
-\par 如\autoref{code:sample}所示，这是一段代码。
-计算机学院的代码样式可能与其他专业不同，
-如有需要，可以从计算机学院专业模板中复制相关的代码样式设定。
+对于一个故事，需要将故事先解析成机器可以理解的脚本。这种脚本目前支持.xml和.json文件。其中需要按照格式要求包含情节表格，以及地点树。我们把多个角色在一个地点一段时间中发生的互动称为情节，也就是故事中的一件事情。每个情节在脚本中都有一个编号$a_{i,j}$,代表角色$i$在时间$j$属于情节$a_{i,j}$。地点树表述了地点和情节之间的动态关系，每个地点树的叶子都是一些情节。表明这个情节发生在这个地点。这种设计是因为在故事线可视化中常常使用$y$坐标来隐喻地点的不同。下面为脚本示意：
 
 \begin{lstlisting}[%
-    language={C},
-    caption={simple.c},
-    label={code:sample}
+    language={python},
+    caption={story.json:描述了一个小何和小李在家里的故事},
+    label={code:story}
 ]
-#include <stdio.h>
-
-int main(int argc, char *argv[])
 {
-    printf("Hello, zjuthesis\n");
-    return 0;
+    "Story": {
+    "Locations": { "家": [1] },
+    "Characters": {
+      "小何": [{"Start": 1,"End": 2,"Session": 1],
+      "小李": [{"Start": 1,"End": 2,"Session": 1],
+    }  
+    }  
 }
 \end{lstlisting}
+
+在使用d3.fetch获得提供的脚本文件后，我们正式开始生成故事线，首先解析脚本文件，将其信息完整地放到Story类中。然后进行Generators的处理(\autoref{fig:systemBody})。其含有五步：排序、对齐、压缩、渲染和形变。
+
+第一步：使用Story类中的信息来对每一个时间点的地点、情节和角色进行排序。第二步：对于相邻时间的情节和角色进行对齐，来使得线条之间的弯曲最少。第三步：对于布局进行压缩，减少布局中的空白部分。第四步：加入用户想要的视觉元素，比如线条之间的麻花形、心形等。第五步：对于布局做出整体扭曲，来做出圆形布局，阶梯状布局等特殊形状。最终得到了一个完整的故事线布局。
+
+这样的工作流程可以支持用户配置每一个工作中的约束，此系统具有五种交互，分别对应五个步骤：对于角色的顺序进行排序，强制对齐/分离两个角色，压缩/放大角色之间的距离，改变角色的线条样式以及改变整个布局的走向。
+
+\section{故事线生成流程}
+此系统生成故事线的流程为先读取数据，然后进行一系列的优化工作，最终快速得到美观的用户自己定义的故事线。
+\subsection{排序}
+过去的论文都是使用StoryFlow提出的贪心枚举算法。他们的思路是从高到低的枚举放置元素最多的节点。也就是先放置情节最多的地点节点，再枚举情节第二多的节点放置在已经放置节点的哪个空隙中。对于情节和角色，StoryFlow使用多层有向无环图扫描线算法来处理，也就是按照前一个时间的顺序来对下一个时间进行排序。但是此时我们增加了一个功能，如果需要交换两个角色的顺序，在之前的故事线生成算法中，因为顺序约束比较少，所以可以使用暴力解决。这篇文章提到了如何高效解决带约束的排序问题\cite{forster2004fast}，即是将逆序的元素绑定，平均权值后使用扫描线算法。因为故事线问题会出现很多个约束，所以加入了拓扑排序，以及并查集算法来保证算法的高效，具体算法如下：
+\begin{algorithm}[h]  
+    \caption{带约束的最小交叉算法}  
+    \label{alg::minCrossing}  
+    \begin{algorithmic}[1]  
+      \Require  
+        $list1$: 权值列表;  
+        $list2$: 排序列表;  
+        $constraints$: 顺序约束;  
+      \Ensure  
+        元素顺序 orderList  
+      \While {$k\in{constraints}$}
+        \State 对于约束$k=[k_1,k_2]$，表示$k_1$在$k_2$之上
+        \State 在图$G$中建立$k_2$指向$k_1$的边 
+        \State 在并查集$Set$中，将$k_1$和$k_2$加入同一集合
+        \State 将于$k_1$同一集合的元素的权值全部平均 
+      \EndWhile
+      \State 对于图$G$进行带权值的拓扑排序，得到orderList 
+    \end{algorithmic}  
+  \end{algorithm}  
+
+\subsection{对齐}
+关于对齐，处于美学原则考虑，必须对齐尽可能多的元素，减少最终图形中线条的弯折。从数学上可以这样表示
+\begin{equation}
+    \label{equ:align}
+    E_{\text {align }}=\max \sum_{t=1}^{n_{t}-1} H(t)
+\end{equation}
+这个问题在StoryFlow中被指出可以作为带权值的最长公共子序列问题求解，首先定义权值$R(s_i,s_j)$，对于相同角色越多的情节$s_i,s_j$，对齐他们会有更大的$R$。对于无关角色越多的情节$s_i,s_j$，对齐他们会收获较少的$R$，基于这两个观点，如此定义$R$：
+\begin{equation}
+  \label{equ:alignReward}
+  \operatorname{R}\left(l_{i}, r_{j}\right)=\operatorname{straight}\left(l_{i}, r_{j}\right)+\alpha \cdot\left(1-\left|\frac{i}{m}-\frac{j}{n}\right|\right)
+\end{equation}
+这个式子的第一项代表$l_i,r_j$能对齐的最多角色数，即为越相关的情节，对齐权值越大；第二项$i,j,m,n$分别代表两个情节的对齐角色数，两个情节的总情节数，即为无关角色越少的的情节，对齐权值越大。$\alpha$即为调节更注意对齐线条，还是更注意无关线条的系数，本系统中通过多次实验取0.1。
+得到权值之后进行解最长公共子序列问题:
+
+\begin{algorithm}[h]  
+  \caption{最长公共子序列问题}  
+  \label{alg::LCS}  
+  \begin{algorithmic}[1]  
+    \Require  
+      $list1$: 第一个序列;  
+      $list2$: 第二个序列;  
+      $R$: 对齐权值;
+    \Ensure  
+      $alignList$ 对齐列表
+    \State initial $direction=[\,][\,]$ and $reward=[\,][\,]$;  
+    \For{$i=0$; $i<list1.length$; $i++$}
+      \For{$j=0$; $i<list2.length$; $i++$}
+        \State $reward[i][j]=max(reward[i-1][j],reward[i][j-1],reward[i-1][j-1]+R(i,j))$
+        \State 在$direction$中记录$max$取的位置  
+      \EndFor  
+    \EndFor
+    \State 按照$direction[list1.length][list2.length]$，深度优先搜索输出$alignList$  
+  \end{algorithmic}  
+\end{algorithm}  
+
+\subsection{压缩}
+对于压缩算法，此系统在storyFlow原算法上做了改进。原系统提出了以点为求解基础的二次规划方法：
+\begin{equation}
+  \label{equ:compress}
+  \min \sum_{i=1}^{n_{e}} \sum_{j}^{n_{t}-1}\left(y_{i, j}-y_{i, j+1}\right)^{2}+\beta \sum_{i=1}^{n_{e}} \sum_{j=1}^{n_{t}} y_{i, j}^{2}
+\end{equation}
+约束为：
+\begin{equation}
+  \label{equ:compressLimit}
+  \begin{array}{ll}
+    y_{i_{1}, j}<y_{i_{2}, j}, & \text { if } S_{i_{1}, j} \prec S_{i_{2}, j} \\
+    y_{i, j}=y_{i, j+1}, & \text { if } S_{i, j} \leftrightarrow S_{i, j+1} \\
+    y_{i, j}-y_{i+1, j}=d_{\text {in }}, & \text { if } \operatorname{SID}\left(S_{i, j}\right)=\operatorname{SID}\left(S_{i+1, j}\right) \\
+    \left|y_{i, j}-y_{i+1, j}\right| \geq d_{\text {out }}, & \text { if } \operatorname{SID}\left(S_{i, j}\right) \neq \operatorname{SID}\left(S_{i+1, j}\right)
+    \end{array}
+\end{equation}
+其中$S_{i,j}$代表一个情节，这个情节包含$j$时间的角色$i$。$SID(S_{i,j})$是$S_{i,j}$的编号，$y_{i,j}$代表角色$i$在时间$j$是所处点的纵坐标值，$d$是情节内或情节外的距离常数。
+对于动辄数十个角色，数百个情节的故事来说，这样的二次方程是庞大而复杂的。此系统使用了Tanahashi等人\cite{tanahashi2015efficient}提出的方法，将所有对齐的固定元素作为一个计算单位$SS$，也称之为槽。这个方程较为复杂，将会出现以下符号。
+\begin{itemize}
+  \item $s$：槽的编号
+  \item $y$: 槽的坐标
+  \item $T$：槽的时间范围
+  \item $Btm$: $Btm(t)$表示$t$时间最下面的角色的坐标
+  \item $Top$: $Top(t)$表示$t$时间最上面的角色的坐标
+  \item $d$: 情节间或情节内的距离常数
+\end{itemize}
+得到了这样的二次方程：
+\begin{equation}
+  \label{equ:compress1}
+  \text { minimize } \sum_{\mathbf{v} S S_{i} \in \mathbf{SS}}\left(k_{i} \cdot y_{i}^{2}+l_{i} \cdot d_{i n} \cdot y_{i}\right)
+\end{equation}
+其中
+\begin{equation}
+  \label{equ:compressParam}
+    \begin{aligned}
+      k_{i} &=\sum_{V t \in T_{i}}\left(\operatorname{Top}_{i}(t)-B t m_{i}(t)+1\right) \\
+      &=k_{i(t-1)}+\left(T o p_{i}(t)-B t m_{i}(t)+1\right) \\
+      l_{i} &=\sum_{\forall l \in T_{i}} \sum_{x=B t m_{i}(t)}^{T o p_{i}(t)} 2 x \\
+      &=l_{i(t-1)}+\sum_{x=B t m_{i}(t)}^{T o p_{i}(t)} 2 x
+    \end{aligned}
+\end{equation}
+其约束为：
+\begin{equation}
+  \label{equ:compress1Limit}
+  \begin{array}{c}
+    \forall S S_{i}, S S_{j} \in \mathbf{S S} \text { where } s_{i}>s_{j} \text { and }\left|T_{i} \cap T_{j}\right|>0 \\
+    \min _{\forall t \in\left(T_{i} \cap T_{j}\right)}\left(y_{i}+B t m_{i}(t) \cdot d_{i n}\right)-\left(y_{j}+T o p_{j}(t) \cdot d_{i n}\right) \geq d_{o u t}
+    \end{array}
+\end{equation}
+\subsection{渲染}
+现在系统得到了所有点的坐标，但是还没有得到线条。系统将在渲染这一步获得线条。
+每个角色将会分成许多个部分，每个部分按照得到的点求解一条贝塞尔曲线，最终由这些曲线组成最终的线段。
+而用户可以指定一些线段样式，包括颜色、形状等，比如麻花状来表达两个角色更紧密的关系；也可以选择尖刺状，来表达两个角色矛盾的关系。
+
+更关键的是这一步还会将点渲染成一个canvas对象，用户可以用来直接输出，这个功能十分重要，此系统在这一步对paper.js进行了简单封装，使其支持绘画故事线。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1\linewidth]{body/render}
+  \caption{\label{fig:tran}渲染交互示意图，将线段扭曲起来，进行角色之间关系的暗示}
+\end{figure}
+
+\subsection{变形}
+变形这一步是选择性的，但是其功能十分强大，如果你对于现在的布局形状不满意，你可以用简单一笔改变目前布局的形状，多次尝试后，总会获得满意的布局，尤其是用户想要画非常规的环形、阶梯性布局时，变形是一定会被用到的。
+
+这一模块的实现调用了之前模块的交互，我们定义了一个相似度函数。
+\begin{equation}
+  \label{equ:transim}
+  sim=\sum_{i,j}(y_{i,j}-User_{y_{i,j}})
+\end{equation}
+通过随机调用排序方法的参数，此系统尝试让相似度增大，对于增大的操作一律保留。使用这样的贪心算法，可以得到一个布局，这个布局可能会达到化简用户交互的目的，即使探索失败，用户也只花费了一笔。他还是可以通过自己手动调整来探索设计空间。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1\linewidth]{body/tran}
+  \caption{\label{fig:tran}变形交互示意图，通过简单的一笔就能得到目标形状的布局}
+\end{figure}
+\section{系统部署}
+我将这个系统使用Continuous Integration/Continuous Delivery工具部署在了之江实验室的服务器上。显示模块使用TypeScript和React.js。为了支持在网页上的灵活交互，此系统封装了一个前端库，Paper.js。探索变形结果的服务端是由Python完成的。此系统同时也使用C\#来计算排序，对齐和压缩，这里的结果由Python转发至前端。因为使用了多种语言来开发不同的模块，我们专门开发了一个转发接口，来处理HTTP请求。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1\linewidth]{body/big}
+  \caption{\label{fig:big}使用此系统制作故事线的流程}
+\end{figure}
+
+\section{用户调研}
+为了测试系统能否创作出具有美观性、叙事性的故事线。我设计了一个用户调研环节，采访了两位来自CAD\&CG国家重点实验室的用户。第一名用户（UZ）是图形学方向的研究员，同时他也是一名绘画爱好者，他将主要评价此系统创作出的故事线是否具有美观性，以及他自己使用系统进行创作的时候是否足够好用。第二名用户（UL)是生成模型方向的研究员，并且热爱漫画，他将主要评价此系统创作出的故事线是否接近手绘故事线，以及用这个系统创作他熟知的漫画时是否能传达叙事性。他们会自由创作30分钟，然后接受调研访谈。
+
+UZ主要就美观性方向进行了评价。我给了他三种故事线：手绘故事线、本系统创作的故事线以及StoryFlow创作的故事线。他比较了这三种故事线，觉得手绘故事线十分生动而吸引人，StoryFlow创作的故事线简洁，但是被本系统创作的故事线完全覆盖住了，因为本系统创作的故事线在手绘故事线面前也十分简洁，但却比StoryFlow的故事线多了一些叙事元素。他在创作的时候觉得本系统变形模块中的探索功能十分有趣，可以自己探索设计方案，虽然成功率不高，但是这种通过简单的交互做复杂的事情很有设计感。我们也会就这种电脑辅助设计的方案加以探索。
+
+UL主要就叙事性方向进行评价，他对于他喜欢的漫画进行了故事线的创作。但是尴尬的事情是本系统现在并不能完美的添加人物，必须先添加全部的人物，才能设计交互，不能穿插进行，虽然这个问题并不是此系统的核心设计，但此系统会在之后的更新中逐步实现人物添加和交互的可交换性。在添加完人物之后，他开始创作，觉得这个系统帮助他回忆起来了故事中的很多细节。他提出此系统可以像知识导图一样用来复习特定的知识。创作完毕后，他对于此系统的评价比起添加人物时提高了许多，同时他提出了一个新的观点，视觉编码复杂的手绘故事线反而难以传达信息。复杂的视觉元素具有冲击感，但是人们却难以理解。简单的线条和文字更能帮助他回忆故事细节，也就是此系统创作的故事线比其手绘故事线更有叙事性。
+
+\section{用户样例}
+为了说明此系统的可用性，我使用此系统创作了《正义联盟》的故事线(\autoref{fig:big})，并且描述如何进行创作。这个样例旨在说明如何使用本系统通过交互创作出具有良好美观性和叙事性的故事线。
+
+为了方便叙述，此处简化了《正义联盟》的故事，只描述其中的重要事件。《正义联盟》描述了超级英雄如何在一起组建了正义联盟来对抗荒原狼，其大致分为三个阶段。首先蝙蝠侠和神奇女侠决定招募队友，他们招募到了闪电，钢骨和海王。第二个阶段开始于正义联盟对抗荒原狼和营救超人。但是超人被荒原狼控制攻击了超级英雄们。他回复神智后决定加入正义联盟，一起对抗荒原狼。第三阶段是超级英雄大战荒原狼，最终超级英雄击退了荒原狼。
+
+我们将演示如何使用此系统还原这个故事。首先加载正义联盟的脚本，得到了最初的故事情节，然后因为最初的系统布局中超级英雄和荒原狼混杂在一起，这不符合认知，用户使用排序工具将他们分开，让荒原狼独自到最上面，超级英雄到布局的下方。然后基于用户对于故事的理解，蝙蝠侠和神奇女侠招募队友那里应该逐渐结合，所以使用变形工具在点之间加一个缓坡，让超级英雄们逐步会和。然后到了大战的高潮阶段，用户想用一个激烈一些的大波浪线来表示大战和高潮，就在中间又使用变形工具加了一个大波浪形。
+
+但是此时系统提供的故事线由于多次变形显得不太美观，用户就反复用变形模块的探索交互查找好看的布局。用户多次尝试后找到了一个布局，它有更好的改进的空间，用户选择了这个布局，然后进行拉直等操作。最后使用渲染交互改变线条的样式，画出合适的颜色。然后用户结束了创作。当然最后也可以放一些超级英雄的贴图或者文字，来进一步美化故事线。
+
+\section{总结与展望}
+在本系统中，我们开发了一个半自动的故事线生成工作。其相比于全自动方法StoryFlow更加快速，相比于半自动方法iStoryline更加灵活。本系统可以很好的连接电脑的快速计算与人的美观设计。我们还设计了一个重要的计算机辅助交互：变形。在你对故事线进行变形之后可以通过贪心算法尽力找到一系列其他交互，使得这两种操作等价，从而让你的故事线更加平整。我们也通过定性的用户实验和一组用例来证明了此系统的可用性。
+
+作为未来的工作，我们计划加入可以对故事脚本进行修改的特性，以及从故事进行语义分析，自动生成脚本的设计。
+
