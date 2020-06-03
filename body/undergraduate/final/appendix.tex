@@ -2,14 +2,25 @@
 
 {
     \sectionnonum{附录}
-
+    \appendixsubsecmajornumbering
+    \subsection{故事线样图}
+    以下为刘书含学长使用此系统制作的图片。值得注意的是，刘书含学长使用的版本中，变形交互由强化学习模块支持，其也为本人完成，但是超出了开题的范围，此文章不进行介绍。
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{body/storyline}
+        \caption{\label{fig:append}用户使用此系统制作的故事线图，旨在说明实体之间的关系与交互}
+    \end{figure}
+    \clearpage
     \appendixsubsecmajornumbering
 
     \subsection{代码仓库}
-    此系统的开源代码位于https://github.com/tangtan/iStoryline.js，为一个git仓库。所有者为唐谈学长，此仓库原先是为了存储他在2019年开发的iStoryline系统，其后我与唐谈学长、刘书含学长共同迭代开发此系统。我负责后端算法包的开发。本人的开发用户名为evenlasting或者lirenzhong,主要的开发分支位于dev以及layout。
+    此系统的开源代码位于https://github.com/tangtan/iStoryline.js，为一个git仓库。所有者为唐谈学长，此仓库原先是为了存储他在2019年开发的iStoryline系统，其后我与唐谈学长、刘书含学长、吴欣科学长共同迭代开发此系统。我负责后端算法包的开发。本人的开发用户名为evenlasting或者lirenzhong,主要的开发分支位于dev以及layout。
     
-    此系统的项目介绍以及开发文档均位于readme.md中，可供各位读者查阅。以及本文并未将测试文档写入，而是按照论文的格式撰写，是因为此系统偏向科研，并且还没有到需要测试性能的阶段，仍需要继续迭代开发，才能最终作为产品发布。
+    此系统的项目介绍以及开发文档均位于readme.md中，可供各位读者查阅。以及本文并未将测试文档写入，而是按照论文的格式撰写，一是因为仓库中已经含有此信息，二是因为此系统偏向科研，并且还没有到需要测试性能的阶段，仍需要继续迭代开发，才能最终作为产品发布。
+    \clearpage
+    \appendixsubsecmajornumbering
 
-    
+    \subsection{部署系统}
+    此系统使用之江实验室GitLab的CI/CD功能自动部署在了K8集群上，网址为：plotthread.projects.zjvis.org。但是由于微软的官方.net docker镜像库经常失效，此系统可能会因为此原因自动部署失败而同步失效。
 
 }
